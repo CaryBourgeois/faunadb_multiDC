@@ -13,7 +13,7 @@ services:
       faunadb:
         ipv4_address: 172.168.1.2
     ports:
-      - "8443"
+      - "8443:8443"
       - "8444"
     volumes:
       - ./node1/data:/var/lib/faunadb:delegated
