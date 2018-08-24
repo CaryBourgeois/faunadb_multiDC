@@ -1,6 +1,6 @@
 # faunadb_multiDC
 
-
+Check out the [LICENSE](LICENSE) before you use this.
 
 This is an example of how you might use the public FaunaDB docker image with docker-compose to create a 3 data center 1 node per DC cluster.
 
