@@ -1,0 +1,9 @@
+---
+auth_root_key: secret
+network_datacenter_name: dc1
+network_listen_address: faunadb-node1
+network_broadcast_address: faunadb-node1
+network_admin_http_address: faunadb-node1
+network_coordinator_http_address: 0.0.0.0
+storage_transaction_log_nodes:
+ - [ faunadb-node1, faunadb-node2, faunadb-node3 ]

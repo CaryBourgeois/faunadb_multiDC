@@ -1,0 +1,80 @@
+---
+version: "3"
+services:
+  faunadb-node1:
+    image: fauna/faunadb
+    environment:
+      cpus: 2
+      MAX_HEAP_SIZE: "3G"
+      mem_swappiness: 0
+      UID: 0
+      GID: 0
+    networks:
+      faunadb:
+        ipv4_address: 172.168.1.2
+    ports:
+      - "8443"
+      - "8444"
+    volumes:
+      - ./node1/data:/var/lib/faunadb:delegated
+      - ./node1/log:/var/log/faunadb:delegated
+      - ./node1/faunadb.yml:/etc/faunadb.yml
+    command: --init --config /etc/faunadb.yml
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8443/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+
+  faunadb-node2:
+    image: fauna/faunadb
+    environment:
+      cpus: 2
+      MAX_HEAP_SIZE: "3G"
+      mem_swappiness: 0
+      UID: 0
+      GID: 0
+    networks:
+      faunadb:
+        ipv4_address: 172.168.1.3
+    ports:
+     - "8443"
+     - "8444"
+    volumes:
+     - ./node2/data:/var/lib/faunadb:delegated
+     - ./node2/log:/var/log/faunadb:delegated
+     - ./node2/faunadb.yml:/etc/faunadb.yml
+    command: --join 172.168.1.2 --config /etc/faunadb.yml
+    depends_on:
+     - faunadb-node1
+
+
+  faunadb-node3:
+    image: fauna/faunadb
+    environment:
+      cpus: 2
+      MAX_HEAP_SIZE: "3G"
+      mem_swappiness: 0
+      UID: 0
+      GID: 0
+    networks:
+      faunadb:
+        ipv4_address: 172.168.1.4
+    ports:
+     - "8443"
+     - "8444"
+    volumes:
+     - ./node3/data:/var/lib/faunadb:delegated
+     - ./node3/log:/var/log/faunadb:delegated
+     - ./node3/faunadb.yml:/etc/faunadb.yml
+    command: --join 172.168.1.2 --config /etc/faunadb.yml
+    depends_on:
+     - faunadb-node1
+
+networks:
+  faunadb:
+    ipam:
+      config:
+      - subnet: 172.168.1.0/24
